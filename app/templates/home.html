@@ -1,0 +1,21 @@
+<html>
+  <body>
+    <p> * All information is provided by Johns Hopkins Üniversitesi CCSE. *</p>
+    
+    <h1>Search Country</h1>
+
+    <form method="POST" action="/">
+      Country:<input type="text" name="country"> Type country to learn 
+        <br/> <br/>
+      E-mail:<input type="text" name="email"> * Type to send to your email address 
+        <br/> <br/>
+      <input type="submit" value="Get Information!">
+    </form>
+    
+    <h1>Records:</h1>
+    {% for cor_inf in coronainf %}
+      <p> Last Record: {{cor_inf.last_record}} Country: {{cor_inf.country}}, Confirmed: {{cor_inf.confirmed}}, Deaths: {{cor_inf.deaths}}, Active: {{cor_inf.active}}, Recovered: {{cor_inf.recovered}} </p>
+    {% endfor %}
+
+  </body>
+</html>
