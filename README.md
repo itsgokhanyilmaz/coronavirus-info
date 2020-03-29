@@ -1,6 +1,8 @@
 # coronavirus-info
 This is a basic flask application to get daily coronavirus information. 
 
+<img src="./screenshots/corona-screenshot.png" height="650px" width="512px">
+
 ### Prerequisites
 
 You need to install Python 3.6 or up
