@@ -7,7 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 from api import corona
 from datetime import datetime
 import mail_sender
-import re
+import re, json
+import requests as request_lib
+from flask_cors import CORS, cross_origin
 
 EMAIL_REGEX = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
@@ -15,9 +17,24 @@ project_directory = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(project_directory, "coronavirusinfo.db"))
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 
 db = SQLAlchemy(app)
+
+@app.route('/get_corona')
+@cross_origin(supports_credentials=True)
+def get_corona_data():
+    country = request.args.get("country")
+    response = request_lib.get("https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/2/query?f=json&where=\
+        Country_Region%3D%27{}%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&resultOffset=0&resultRecordCount=50&cacheHint=true".format(country))
+
+    dict_data = json.loads(response.text)
+
+    for info in dict_data.get("features"):
+        result = info.get("attributes")
+    
+    return result
 
 @app.route("/", methods=["GET", "POST"])
 def hello():
@@ -61,4 +78,5 @@ class CoronaInfo(db.Model):
         return "<Country: {}, Deaths: {}, Recovered: {}, Active: {}, Confirmed: {}>".format(self.country, self.deaths, self.recovered, self.active, self.confirmed)
 
 if __name__ == "__main__":
+    db.create_all()
     app.run()
