@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-
 import { Layout, Input } from 'antd';
-import axios from 'axios';
 import CovidChart from './CovidChart';
+import coronainfo from "../api/coronainfo";
+
 import 'antd/es/input/style/index.css';
 import 'antd/es/select/style/index.css';
+
 const { Header } = Layout;
 const { Search } = Input;
-
 
 class GetInfo extends Component{
     constructor(props){
@@ -19,17 +19,14 @@ class GetInfo extends Component{
         };
     }
 
-    getSearchResult(country){
-        axios({
-            method : 'get',
-            url: `http://127.0.0.1:5000/get_corona?country=${country}`
-        }).then(obj => {
-            this.setState({
-                results: obj.data,
-                country: country
-            });
-            console.log(obj.data)
-        })
+    getSearchResult = async (country) => {
+        const response = await coronainfo.get(`/get_corona?country=${country}`) 
+
+        this.setState({
+            results: response.data,
+            country: country
+        });
+        console.log(response.data)
     }
 
     render(){
