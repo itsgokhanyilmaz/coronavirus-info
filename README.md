@@ -1,7 +1,7 @@
 # coronavirus-info
 This is a basic flask application to get daily coronavirus information. 
 
-<img src="./screenshots/corona-screenshot.png" height="650px" width="512px">
+<img src="./screenshots/corona-italy-stat.PNG">
 
 ### Prerequisites
 
